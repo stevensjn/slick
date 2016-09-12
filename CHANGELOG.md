@@ -15,6 +15,7 @@
 - variableWidth
 - vertical
 - verticalSwiping
+- centerMode
 
 ### Methods
 
