@@ -59,7 +59,7 @@
                 fade: false,
                 focusOnSelect: false,
                 initialSlide: 0,
-                lazyLoad: 'ondemand',
+                lazyLoad: true,
                 pauseOnHover: true,
                 pauseOnFocus: true,
                 pauseOnDotsHover: false,
@@ -1755,7 +1755,7 @@
 
         }
 
-        if (_.options.lazyLoad === 'ondemand') {
+        if (_.options.lazyLoad === true) {
             _.lazyLoad();
         }
 
