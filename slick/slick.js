@@ -1311,11 +1311,7 @@
         _.$slider.removeClass('slick-loading');
 
         _.initUI();
-
-        if (_.options.lazyLoad === 'progressive') {
-            _.progressiveLazyLoad();
-        }
-
+        
     };
 
     Slick.prototype.next = Slick.prototype.slickNext = function() {
@@ -1400,72 +1396,6 @@
     Slick.prototype.preventDefault = function(event) {
 
         event.preventDefault();
-
-    };
-
-    Slick.prototype.progressiveLazyLoad = function( tryCount ) {
-
-        tryCount = tryCount || 1;
-
-        var _ = this,
-            $imgsToLoad = $( 'img[data-lazy]', _.$slider ),
-            image,
-            imageSource,
-            imageToLoad;
-
-        if ( $imgsToLoad.length ) {
-
-            image = $imgsToLoad.first();
-            imageSource = image.attr('data-lazy');
-            imageToLoad = document.createElement('img');
-
-            imageToLoad.onload = function() {
-
-                image
-                    .attr( 'src', imageSource )
-                    .removeAttr('data-lazy')
-                    .removeClass('slick-loading');
-
-                _.$slider.trigger('lazyLoaded', [ _, image, imageSource ]);
-                _.progressiveLazyLoad();
-
-            };
-
-            imageToLoad.onerror = function() {
-
-                if ( tryCount < 3 ) {
-
-                    /**
-                     * try to load the image 3 times,
-                     * leave a slight delay so we don't get
-                     * servers blocking the request.
-                     */
-                    setTimeout( function() {
-                        _.progressiveLazyLoad( tryCount + 1 );
-                    }, 500 );
-
-                } else {
-
-                    image
-                        .removeAttr( 'data-lazy' )
-                        .removeClass( 'slick-loading' )
-                        .addClass( 'slick-lazyload-error' );
-
-                    _.$slider.trigger('lazyLoadError', [ _, image, imageSource ]);
-
-                    _.progressiveLazyLoad();
-
-                }
-
-            };
-
-            imageToLoad.src = imageSource;
-
-        } else {
-
-            _.$slider.trigger('allImagesLoaded', [ _ ]);
-
-        }
 
     };
 
