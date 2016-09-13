@@ -16,6 +16,7 @@
 - vertical
 - verticalSwiping
 - centerMode
+- infinite
 
 ### Methods
 

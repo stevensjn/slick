@@ -6,7 +6,7 @@
 |___/_|_|\___|_|\_(_)/ |___/
                    |__/
 
- Version: 1.6.0
+ Version: 1.6.1
   Author: Ken Wheeler
  Website: http://kenwheeler.github.io
     Docs: http://kenwheeler.github.io/slick
@@ -57,7 +57,6 @@
                 edgeFriction: 0.35,
                 fade: false,
                 focusOnSelect: false,
-                infinite: true,
                 initialSlide: 0,
                 lazyLoad: 'ondemand',
                 pauseOnHover: true,
@@ -327,24 +326,6 @@
             slideTo = _.currentSlide + _.options.slidesToScroll;
 
         if ( !_.paused && !_.interrupted && !_.focussed ) {
-
-            if ( _.options.infinite === false ) {
-
-                if ( _.direction === 1 && ( _.currentSlide + 1 ) === ( _.slideCount - 1 )) {
-                    _.direction = 0;
-                }
-
-                else if ( _.direction === 0 ) {
-
-                    slideTo = _.currentSlide - _.options.slidesToScroll;
-
-                    if ( _.currentSlide - 1 === 0 ) {
-                        _.direction = 1;
-                    }
-
-                }
-
-            }
 
             _.slideHandler( slideTo );
 
@@ -776,20 +757,10 @@
         var counter = 0;
         var pagerQty = 0;
 
-        if (_.options.infinite === true) {
-            while (breakPoint < _.slideCount) {
-                ++pagerQty;
-                breakPoint = counter + _.options.slidesToScroll;
-                counter += _.options.slidesToScroll <= _.options.slidesToShow ? _.options.slidesToScroll : _.options.slidesToShow;
-            }
-        } else if(!_.options.asNavFor) {
-            pagerQty = 1 + Math.ceil((_.slideCount - _.options.slidesToShow) / _.options.slidesToScroll);
-        }else {
-            while (breakPoint < _.slideCount) {
-                ++pagerQty;
-                breakPoint = counter + _.options.slidesToScroll;
-                counter += _.options.slidesToScroll <= _.options.slidesToShow ? _.options.slidesToScroll : _.options.slidesToShow;
-            }
+        while (breakPoint < _.slideCount) {
+            ++pagerQty;
+            breakPoint = counter + _.options.slidesToScroll;
+            counter += _.options.slidesToScroll <= _.options.slidesToShow ? _.options.slidesToScroll : _.options.slidesToShow;
         }
 
         return pagerQty - 1;
@@ -801,32 +772,24 @@
         var _ = this,
             targetLeft,
             verticalHeight,
-            verticalOffset = 0,
-            targetSlide;
+            verticalOffset = 0;
 
         _.slideOffset = 0;
         verticalHeight = _.$slides.first().outerHeight(true);
 
-        if (_.options.infinite === true) {
-            if (_.slideCount > _.options.slidesToShow) {
-                _.slideOffset = (_.slideWidth * _.options.slidesToShow) * -1;
-                verticalOffset = (verticalHeight * _.options.slidesToShow) * -1;
-            }
-            if (_.slideCount % _.options.slidesToScroll !== 0) {
-                if (slideIndex + _.options.slidesToScroll > _.slideCount && _.slideCount > _.options.slidesToShow) {
-                    if (slideIndex > _.slideCount) {
-                        _.slideOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * _.slideWidth) * -1;
-                        verticalOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * verticalHeight) * -1;
-                    } else {
-                        _.slideOffset = ((_.slideCount % _.options.slidesToScroll) * _.slideWidth) * -1;
-                        verticalOffset = ((_.slideCount % _.options.slidesToScroll) * verticalHeight) * -1;
-                    }
+        if (_.slideCount > _.options.slidesToShow) {
+            _.slideOffset = (_.slideWidth * _.options.slidesToShow) * -1;
+            verticalOffset = (verticalHeight * _.options.slidesToShow) * -1;
+        }
+        if (_.slideCount % _.options.slidesToScroll !== 0) {
+            if (slideIndex + _.options.slidesToScroll > _.slideCount && _.slideCount > _.options.slidesToShow) {
+                if (slideIndex > _.slideCount) {
+                    _.slideOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * _.slideWidth) * -1;
+                    verticalOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * verticalHeight) * -1;
+                } else {
+                    _.slideOffset = ((_.slideCount % _.options.slidesToScroll) * _.slideWidth) * -1;
+                    verticalOffset = ((_.slideCount % _.options.slidesToScroll) * verticalHeight) * -1;
                 }
-            }
-        } else {
-            if (slideIndex + _.options.slidesToShow > _.slideCount) {
-                _.slideOffset = ((slideIndex + _.options.slidesToShow) - _.slideCount) * _.slideWidth;
-                verticalOffset = ((slideIndex + _.options.slidesToShow) - _.slideCount) * verticalHeight;
             }
         }
 
@@ -857,13 +820,9 @@
             indexes = [],
             max;
 
-        if (_.options.infinite === false) {
-            max = _.slideCount;
-        } else {
-            breakPoint = _.options.slidesToScroll * -1;
-            counter = _.options.slidesToScroll * -1;
-            max = _.slideCount * 2;
-        }
+        breakPoint = _.options.slidesToScroll * -1;
+        counter = _.options.slidesToScroll * -1;
+        max = _.slideCount * 2;
 
         while (breakPoint < max) {
             indexes.push(breakPoint);
@@ -1186,7 +1145,7 @@
 
         }
 
-        rangeStart = _.options.infinite ? _.options.slidesToShow + _.currentSlide : _.currentSlide;
+        rangeStart = _.options.slidesToShow;
         rangeEnd = Math.ceil(rangeStart + _.options.slidesToShow);
         if (_.options.fade === true) {
             if (rangeStart > 0) rangeStart--;
@@ -1387,12 +1346,6 @@
 
         lastVisibleIndex = _.slideCount - _.options.slidesToShow;
 
-        // in non-infinite sliders, we don't want to go past the
-        // last visible index.
-        if( !_.options.infinite && ( _.currentSlide > lastVisibleIndex )) {
-            _.currentSlide = lastVisibleIndex;
-        }
-
         // if less slides than to show, go to start.
         if ( _.slideCount <= _.options.slidesToShow ) {
             _.currentSlide = 0;
@@ -1569,7 +1522,7 @@
          *     .slick("setOption", { 'option': value, ... }, refresh )
          */
 
-        var _ = this, l, item, option, value, refresh = false, type;
+        var _ = this, option, value, refresh = false, type;
 
         if( $.type( arguments[0] ) === 'object' ) {
 
@@ -1694,8 +1647,7 @@
 
     Slick.prototype.setSlideClasses = function(index) {
 
-        var _ = this,
-            centerOffset, allSlides, indexOffset, remainder;
+        var _ = this, allSlides, indexOffset, remainder;
 
         allSlides = _.$slider
             .find('.slick-slide')
@@ -1722,7 +1674,7 @@
         } else {
 
             remainder = _.slideCount % _.options.slidesToShow;
-            indexOffset = _.options.infinite === true ? _.options.slidesToShow + index : index;
+            indexOffset = _.options.slidesToShow + index;
 
             if (_.options.slidesToShow == _.options.slidesToScroll && (_.slideCount - index) < _.options.slidesToShow) {
 
@@ -1753,7 +1705,7 @@
         var _ = this,
             i, slideIndex, infiniteCount;
 
-        if (_.options.infinite === true && _.options.fade === false) {
+        if (_.options.fade === false) {
 
             slideIndex = null;
 
@@ -1848,20 +1800,6 @@
         slideLeft = _.getLeft(_.currentSlide);
 
         _.currentLeft = _.swipeLeft === null ? slideLeft : _.swipeLeft;
-
-        if (_.options.infinite === false && (index < 0 || index > _.getDotCount() * _.options.slidesToScroll)) {
-            if (_.options.fade === false) {
-                targetSlide = _.currentSlide;
-                if (dontAnimate !== true) {
-                    _.animateSlide(slideLeft, function() {
-                        _.postSlide(targetSlide);
-                    });
-                } else {
-                    _.postSlide(targetSlide);
-                }
-            }
-            return;
-        }
 
         if ( _.options.autoplay ) {
             clearInterval(_.autoPlayTimer);
@@ -2080,9 +2018,7 @@
 
     Slick.prototype.swipeMove = function(event) {
 
-        var _ = this,
-            edgeWasHit = false,
-            curLeft, swipeDirection, swipeLength, positionOffset, touches;
+        var _ = this, curLeft, swipeDirection, swipeLength, positionOffset, touches;
 
         touches = event.originalEvent !== undefined ? event.originalEvent.touches : null;
 
@@ -2117,13 +2053,6 @@
         swipeLength = _.touchObject.swipeLength;
 
         _.touchObject.edgeHit = false;
-
-        if (_.options.infinite === false) {
-            if ((_.currentSlide === 0 && swipeDirection === 'right') || (_.currentSlide >= _.getDotCount() && swipeDirection === 'left')) {
-                swipeLength = _.touchObject.swipeLength * _.options.edgeFriction;
-                _.touchObject.edgeHit = true;
-            }
-        }
 
         _.swipeLeft = curLeft + swipeLength * positionOffset;
 
