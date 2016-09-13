@@ -993,7 +993,6 @@
             _.startLoad();
             _.loadSlider();
             _.initializeEvents();
-            _.updateArrows();
             _.updateDots();
             _.focusHandler();
 
@@ -1525,7 +1524,6 @@
         _.setProps();
         _.setupInfinite();
         _.buildArrows();
-        _.updateArrows();
         _.initArrowEvents();
         _.buildDots();
         _.updateDots();
@@ -1975,7 +1973,6 @@
         }
 
         _.updateDots();
-        _.updateArrows();
 
         if (_.options.fade === true) {
             if (dontAnimate !== true) {
@@ -2005,6 +2002,13 @@
     Slick.prototype.startLoad = function() {
 
         var _ = this;
+
+        if (_.options.arrows === true && _.slideCount > _.options.slidesToShow) {
+
+            _.$prevArrow.hide();
+            _.$nextArrow.hide();
+
+        }
 
         if (_.options.dots === true && _.slideCount > _.options.slidesToShow) {
 
@@ -2225,6 +2229,24 @@
         _.dragging = true;
 
     };
+    
+    Slick.prototype.unfilterSlides = Slick.prototype.slickUnfilter = function() {
+
+        var _ = this;
+
+        if (_.$slidesCache !== null) {
+
+            _.unload();
+
+            _.$slideTrack.children(this.options.slide).detach();
+
+            _.$slidesCache.appendTo(_.$slideTrack);
+
+            _.reinit();
+
+        }
+
+    };
 
     Slick.prototype.unload = function() {
 
@@ -2234,6 +2256,14 @@
 
         if (_.$dots) {
             _.$dots.remove();
+        }
+
+        if (_.$prevArrow && _.htmlExpr.test(_.options.prevArrow)) {
+            _.$prevArrow.remove();
+        }
+
+        if (_.$nextArrow && _.htmlExpr.test(_.options.nextArrow)) {
+            _.$nextArrow.remove();
         }
 
         _.$slides
