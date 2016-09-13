@@ -335,7 +335,7 @@
         }
 
     };
-    
+
     Slick.prototype.buildArrows = function() {
 
         var _ = this;
@@ -437,7 +437,7 @@
         $('img[data-lazy]', _.$slider).not('[src]').addClass('slick-loading');
 
         _.setupInfinite();
-        
+
         _.buildArrows();
 
         _.buildDots();
@@ -662,8 +662,8 @@
         if (_.$dots) {
             _.$dots.remove();
         }
-        
-        
+
+
         if ( _.$prevArrow && _.$prevArrow.length ) {
 
             _.$prevArrow
@@ -797,7 +797,7 @@
         }
 
     };
-    
+
     Slick.prototype.filterSlides = Slick.prototype.slickFilter = function(filter) {
 
         var _ = this;
@@ -841,7 +841,7 @@
 
         });
     };
-    
+
     Slick.prototype.getCurrent = Slick.prototype.slickCurrentSlide = function() {
 
         var _ = this;
@@ -849,7 +849,7 @@
 
     };
 
-    
+
     Slick.prototype.getDotCount = function() {
 
         var _ = this;
@@ -965,7 +965,7 @@
         }
 
     };
-    
+
     Slick.prototype.goTo = Slick.prototype.slickGoTo = function(slide, dontAnimate) {
 
         var _ = this;
@@ -1059,7 +1059,7 @@
         _.activateADA();
 
     };
-    
+
     Slick.prototype.initArrowEvents = function() {
 
         var _ = this;
@@ -1145,9 +1145,9 @@
     Slick.prototype.initializeEvents = function() {
 
         var _ = this;
-        
+
         _.initArrowEvents();
-        
+
         _.initDotEvents();
         _.initSlideEvents();
 
@@ -1190,7 +1190,7 @@
     Slick.prototype.initUI = function() {
 
         var _ = this;
-        
+
         if (_.options.arrows === true && _.slideCount > _.options.slidesToShow) {
 
             _.$prevArrow.show();
@@ -1311,7 +1311,7 @@
         _.$slider.removeClass('slick-loading');
 
         _.initUI();
-        
+
     };
 
     Slick.prototype.next = Slick.prototype.slickNext = function() {
@@ -1522,7 +1522,7 @@
     Slick.prototype.setDimensions = function() {
 
         var _ = this;
-            
+
         _.listWidth = _.$list.width();
         _.listHeight = _.$list.height();
 
@@ -1972,7 +1972,7 @@
         if ((swipeAngle >= 135) && (swipeAngle <= 225)) {
             return (_.options.rtl === false ? 'right' : 'left');
         }
-        
+
         return 'vertical';
     };
 
@@ -2159,7 +2159,7 @@
         _.dragging = true;
 
     };
-    
+
     Slick.prototype.unfilterSlides = Slick.prototype.slickUnfilter = function() {
 
         var _ = this;
