@@ -4,12 +4,6 @@
 
 ### Options
 
-- appendArrows
-- arrows
-- prevArrow
-- nextArrow
-- $nextArrow
-- $prevArrow
 - adaptiveHeight
 - responsive
 - variableWidth
@@ -23,11 +17,7 @@
 - addSlide
 - animateHeight
 - removeSlide
-- buildArrows
 - checkResponsive
-- initArrowEvents
 - registerBreakpoints
 - setHeight
 - updateArrows
-- unfilterSlides
-- filterSlides
