@@ -760,6 +760,14 @@
         });
     };
     
+    Slick.prototype.getCurrent = Slick.prototype.slickCurrentSlide = function() {
+
+      var _ = this;
+      return _.currentSlide;
+
+    };
+
+    
     Slick.prototype.getDotCount = function() {
 
         var _ = this;
@@ -895,6 +903,19 @@
         } else {
             return _.options.slidesToScroll;
         }
+
+    };
+    
+    Slick.prototype.goTo = Slick.prototype.slickGoTo = function(slide, dontAnimate) {
+
+      var _ = this;
+
+      _.changeSlide({
+        data: {
+          message: 'index',
+          index: parseInt(slide)
+        }
+      }, dontAnimate);
 
     };
 

@@ -20,6 +20,7 @@
 ### Methods
 
 - addSlide
+- animateHeight
 - removeSlide
 - buildArrows
 - checkResponsive
@@ -27,8 +28,5 @@
 - registerBreakpoints
 - setHeight
 - updateArrows
-- animateHeight
-- slickGoTo || goTo
 - unfilterSlides
 - filterSlides
-- getCurrent
